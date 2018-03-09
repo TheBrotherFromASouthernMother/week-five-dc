@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
+    <style media="screen">
+      html, body {
+        width: 100%;
+        height: 100%;
+        font-size: 20px;
+        text-align: center;
+        font-family: 'Fjalla One', sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .main {
+        display: flex;
+        background-image: url("https://i.imgur.com/mrYWLK9.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        background-color: rgba(175, 175, 175, 0.3);
+        background-blend-mode:hard-light;
+        color: white;
+        width: 80%;
+        height: 50%;
+        justify-content: center;
+        align-items: center;
+        text-shadow: 1px 1px black;
+
+      }
+
+      .container {
+        background-color: rgba(175, 175, 175, 0.3);
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+
+      .container input {
+      }
+
+      .weatherBox {
+        margin-top: 5%;
+        width: 40%;
+        height: 20%;
+        background-color: rgba(175, 175, 175, 0.6);
+        display: none;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="main">
+      <div class="container">
+        <h1>Weather</h1>
+        <form class="" action="index.html" id="CityQuery">
+          <label for="cityQuery"> Please select a city: </label>
+          <input type="text" name="cityQuery" value="">
+          <button type="submit" name="button"> Submit</button>
+        </form>
+
+        <div class="weatherBox">
+
+        </div>
+      </div>
+    </div>
+
+
+
+    <script
+      src="http://code.jquery.com/jquery-3.3.1.js"
+      integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+      crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+
+    var $weatherBox = $(".weatherBox")[0];
+
+    var $cityQuery = $('#CityQuery');
+
+    //Api key for openweather maps
+    var apikey = "c2eb1efd18d6970cd9007295b5d394b0";
+    function weatherURL(query, key) {
+      return 'http://api.openweathermap.org/data/2.5/weather?q=' + query + '&APPID=' + apikey;
+    }
+
+    var weatherData;
+
+    $cityQuery.on("submit", function(e) {
+      e.preventDefault();
+      var city = $("#CityQuery input").val()
+      if (city && city.length >= 3) {
+        //AJAX request
+          makeAJAXrequest(city, apikey)
+      } else {
+        alert("City name invalid")
+      }
+      console.log(city)
+    })
+
+
+    function makeAJAXrequest(query, key) {
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          weatherData = JSON.parse(xhr.responseText);
+          var temperatureCelsius = Math.floor(weatherData.main.temp - 273.15);
+          var temperatureF = temperatureCelsius + 33.8;
+          var weatherDescription = weatherData.weather[0].description;
+          UIupdate(temperatureF, temperatureCelsius, weatherDescription);
+          console.log(weatherData)
+        }
+      }
+      xhr.open("GET", weatherURL(query, key))
+      xhr.send();
+    }
+
+    function UIupdate(temperatureF, temperatureCelsius, weatherDescription) {
+      console.log(temperatureF)
+      if (temperatureF > 0 && temperatureF <= 30) {
+        document.body.style.backgroundColor = "#1589d6"
+      } else if (temperatureF > 30 && temperatureF <= 50) {
+        document.body.style.backgroundColor = "#60d2c5"
+      } else if (temperatureF > 50 && temperatureF <= 85) {
+        document.body.style.backgroundColor = "#18dd81"
+      } else if (temperatureF > 85 && temperatureF <= 95)  {
+        document.body.style.backgroundColor = "#efef17"
+      }  else if (temperatureF > 95) {
+        document.body.style.backgroundColor = "#ea6341"
+      }
+      $weatherBox.style.display = 'flex';
+      $weatherBox.innerHTML = String(temperatureF) + " F / " + String(temperatureCelsius) + "<br>" + weatherDescription ;
+    }
+
+
+    </script>
+  </body>
+</html>

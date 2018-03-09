@@ -21,15 +21,15 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
+        font-family: 'Pacifico', cursive;
+        color: rgb(242, 233, 233);
       }
 
       .login {
-        border: 1px solid white;
+        /* border: 1px solid white; */
         width: 80%;
-        height: 80%;
+        height: 90%;
         text-align: center;
-        color: rgb(242, 233, 233);
-        font-family: 'Pacifico', cursive;
         overflow: hidden;
       }
 
@@ -52,6 +52,25 @@
         text-decoration: underline;
         margin-top: 0;
 
+      }
+
+      .signUpForm {
+        width: 80%;
+        height: 50%;
+        display: none;
+      }
+
+      label {
+        margin-top: 2%;
+        margin-bottom: 0;
+      }
+
+      .btn-primary {
+        background: black;
+        border: none;
+        /* position: relative;
+        right: 44%; */
+        margin-top: 1%;
       }
     </style>
   </head>
@@ -85,15 +104,42 @@
                   <br>
                   <label for="pwd"></label>
                   <input type="password" name="pwd" value="" placeholder="password" class="form-control login-fields">
+
+                  <button type="submit" name="" value="" class="btn btn-primary"> Submit </button>
+
                   <p> Not a member?</p>
-                  <a href="sign-in.html" id="signup">Sign Up</a>
+                  <a href="sign-up.html" id="signup">Sign Up</a>
                 </div>
 
               </form>
             </div>
+
+          </div>
+          <div class="container signUpForm">
+            <h1> Sign Up</h1>
+            <form class="" action="" method="post">
+              <label for="firstName"> First Name</label>
+              <input type="text" name="firstName" value="" class="form-control login-fields" required id="firstName">
+
+              <label for="lastName"> Last Name</label>
+              <input type="text" name="lastName" value="" class="form-control login-fields" required>
+
+              <label for="email"> Email </label>
+              <input type="email" name="email" value="" class="form-control login-fields" required id="Email">
+
+              <label for="pwd"> Password </label>
+              <input type="password" name="pwd" value="" class="form-control login-fields" required minlength = '8'>
+
+              <button type="submit" name="" value="" class="btn btn-primary"> Submit </button>
+
+            </form>
+
           </div>
 
       </div>
+
+
+
 
 
 
@@ -120,5 +166,44 @@
       crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+      var $login = $('.login')[0];
+
+      var $signupLink = $('#signup');
+
+      var $signUpForm = $(".signUpForm")[0]
+
+      var $email = $('#Email')
+
+      var testEmail = /^\S+@\S+\.\S+$/;
+
+      var $name = $("#firstName");
+
+      $signupLink.on('click', function(e) {
+        e.preventDefault();
+        $login.style.display = "none"
+        $signUpForm.style.display = "inline-block"
+      })
+
+
+      $signUpForm.addEventListener('submit', function(e) {
+        e.preventDefault()
+        var emailToTest = $email.val()
+        var name = $name.val()
+        var tested = testEmail.test(emailToTest);
+        if (tested) {
+          alert("Welcome " + name)
+        } else {
+          alert("invalid email")
+          location.reload()
+        }
+      })
+
+
+
+
+
+    </script>
   </body>
 </html>
